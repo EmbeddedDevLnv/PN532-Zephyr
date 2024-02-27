@@ -184,10 +184,6 @@ public:
     int8_t felica_RequestSystemCode(uint8_t *numSystemCode, uint16_t *systemCodeList);
     int8_t felica_Release();
 
-    // Help functions to display formatted text
-    static void PrintHex(const uint8_t *data, const uint32_t numBytes);
-    static void PrintHexChar(const uint8_t *pbtData, const uint32_t numBytes);
-
     uint8_t *getBuffer(uint8_t *len) {
         *len = sizeof(pn532_packetbuffer) - 4;
         return pn532_packetbuffer;

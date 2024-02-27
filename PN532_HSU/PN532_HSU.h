@@ -3,7 +3,7 @@
 #define __PN532_HSU_H__
 
 #include "PN532Interface.h"
-#include "Arduino.h"
+#include "Ihardware_serial.hpp"
 
 #define PN532_HSU_DEBUG
 
@@ -11,15 +11,15 @@
 
 class PN532_HSU : public PN532Interface {
 public:
-    PN532_HSU(HardwareSerial &serial);
+    explicit PN532_HSU(IHardwareSerial &serial);
     
-    void begin();
-    void wakeup();
-    virtual int8_t writeCommand(const uint8_t *header, uint8_t hlen, const uint8_t *body = 0, uint8_t blen = 0);
-    int16_t readResponse(uint8_t buf[], uint8_t len, uint16_t timeout);
+    void begin() override;
+    void wakeup() override;
+    int8_t writeCommand(const uint8_t *header, uint8_t hlen, const uint8_t *body = 0, uint8_t blen = 0) override;
+    int16_t readResponse(uint8_t buf[], uint8_t len, uint16_t timeout) override;
     
 private:
-    HardwareSerial* _serial;
+    IHardwareSerial* _serial;
     uint8_t command;
     
     int8_t readAckFrame();
