@@ -130,6 +130,7 @@ public:
     PN532(PN532Interface &interface);
 
     void begin(void);
+    bool powerDown(void);
 
     // Generic PN532 functions
     bool SAMConfig(void);
