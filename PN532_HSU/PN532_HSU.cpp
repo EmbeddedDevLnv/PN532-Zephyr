@@ -25,6 +25,10 @@ void PN532_HSU::wakeup() {
   }
 }
 
+bool PN532_HSU::modifyHsuBaudrate(int baudrate) {
+  return _serial->modifyHsuBaudrate(baudrate);
+}
+
 int8_t PN532_HSU::writeCommand(const uint8_t *header, uint8_t hlen,
                                const uint8_t *body, uint8_t blen) {
 
@@ -66,6 +70,11 @@ int8_t PN532_HSU::writeCommand(const uint8_t *header, uint8_t hlen,
   _serial->write(PN532_POSTAMBLE);
 
   return readAckFrame();
+}
+
+void PN532_HSU::sendAckFrame() {
+  const uint8_t PN532_ACK[] = {0, 0, 0xFF, 0, 0xFF, 0};
+  _serial->write(PN532_ACK, sizeof(PN532_ACK));
 }
 
 int16_t PN532_HSU::readResponse(uint8_t buf[], uint8_t len, uint16_t timeout) {

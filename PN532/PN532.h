@@ -46,6 +46,17 @@
 #define PN532_COMMAND_TGRESPONSETOINITIATOR (0x90)
 #define PN532_COMMAND_TGGETTARGETSTATUS     (0x8A)
 
+// HSU baudrate
+#define SERIAL_BAUDRATE_9_6KBS              (0x00)
+#define SERIAL_BAUDRATE_19_2KBS             (0x01)    
+#define SERIAL_BAUDRATE_38_4KBS             (0x02)
+#define SERIAL_BAUDRATE_57_6KBS             (0x03)
+#define SERIAL_BAUDRATE_115_2KBS            (0x04)
+#define SERIAL_BAUDRATE_230_4KBS            (0x05)
+#define SERIAL_BAUDRATE_460_8KBS            (0x06)
+#define SERIAL_BAUDRATE_921_6KBS            (0x07)
+#define SERIAL_BAUDRATE_1_288MBS            (0x08)
+
 #define PN532_RESPONSE_INDATAEXCHANGE       (0x41)
 #define PN532_RESPONSE_INLISTPASSIVETARGET  (0x4B)
 
@@ -130,9 +141,11 @@ public:
     PN532(PN532Interface &interface);
 
     void begin(void);
-    bool powerDown(void);
+    void wakeup(void);
 
     // Generic PN532 functions
+    bool powerDown(void);
+    bool setSerialBaudrate(void);
     bool SAMConfig(void);
     uint32_t getFirmwareVersion(void);
     uint32_t readRegister(uint16_t reg);

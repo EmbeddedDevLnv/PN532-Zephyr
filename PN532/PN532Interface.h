@@ -31,6 +31,20 @@ public:
     virtual void wakeup() = 0;
 
     /**
+     * @brief Send an ACK frame to the PN532
+     */
+    virtual void sendAckFrame(void) = 0;
+
+    /**
+     * @brief Modify HSU baudrate for the communication between
+     * the host controller and the PN532
+     * 
+     * @param baudrate New baudrate value
+     * @return true if successfull, otherwise false 
+     */
+    virtual bool modifyHsuBaudrate(int baudrate) = 0;
+
+    /**
     * @brief    write a command and check ack
     * @param    header  packet header
     * @param    hlen    length of header

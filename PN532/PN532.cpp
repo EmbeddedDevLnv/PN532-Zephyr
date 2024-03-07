@@ -26,7 +26,43 @@ void PN532::begin() {
 
 /**************************************************************************/
 /*!
+    @brief  Wakes up the NFC module
+*/
+/**************************************************************************/
+void PN532::wakeup() { HAL(wakeup)(); }
+
+/**************************************************************************/
+/*!
+    @brief  Set serial baudrate on the serial link between the host controller
+   and the PN532 (HSU)
+
+   @returns  True if successfull, otherwise false
+*/
+/**************************************************************************/
+bool PN532::setSerialBaudrate() {
+  pn532_packetbuffer[0] = PN532_COMMAND_SETSERIALBAUDRATE;
+  pn532_packetbuffer[1] = SERIAL_BAUDRATE_9_6KBS;
+
+  DMSG("Set serial baudrate");
+
+  if (HAL(writeCommand)(pn532_packetbuffer, 2))
+    return false;
+
+  // read data packet
+  int16_t status =
+      HAL(readResponse)(pn532_packetbuffer, sizeof(pn532_packetbuffer));
+
+  HAL(sendAckFrame)();
+
+  return HAL(modifyHsuBaudrate)(9600);
+  ;
+}
+
+/**************************************************************************/
+/*!
     @brief  Put the PN532 into Power Down mode
+
+    @returns  True if successfull, otherwise false
 */
 /**************************************************************************/
 bool PN532::powerDown() {
