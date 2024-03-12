@@ -36,14 +36,52 @@ void PN532::wakeup() { HAL(wakeup)(); }
     @brief  Set serial baudrate on the serial link between the host controller
    and the PN532 (HSU)
 
+   @param  baudrate  Serial baudrate.
+
    @returns  True if successfull, otherwise false
 */
 /**************************************************************************/
-bool PN532::setSerialBaudrate() {
+bool PN532::setSerialBaudrate(int baudrate) {
   pn532_packetbuffer[0] = PN532_COMMAND_SETSERIALBAUDRATE;
-  pn532_packetbuffer[1] = SERIAL_BAUDRATE_9_6KBS;
 
-  DMSG("Set serial baudrate");
+  uint8_t serialBaudrate;
+
+  switch (baudrate) {
+  case 9600:
+    serialBaudrate = SERIAL_BAUDRATE_9_6KBS;
+    break;
+  case 19200:
+    serialBaudrate = SERIAL_BAUDRATE_19_2KBS;
+    break;
+  case 38400:
+    serialBaudrate = SERIAL_BAUDRATE_38_4KBS;
+    break;
+  case 57600:
+    serialBaudrate = SERIAL_BAUDRATE_57_6KBS;
+    break;
+  case 115200:
+    serialBaudrate = SERIAL_BAUDRATE_115_2KBS;
+    break;
+  case 230400:
+    serialBaudrate = SERIAL_BAUDRATE_230_4KBS;
+    break;
+  case 460800:
+    serialBaudrate = SERIAL_BAUDRATE_460_8KBS;
+    break;
+  case 921600:
+    serialBaudrate = SERIAL_BAUDRATE_921_6KBS;
+    break;
+  case 1288000:
+    serialBaudrate = SERIAL_BAUDRATE_1_288MBS;
+    break;
+  default:
+    DMSG("Baudrate not supported");
+    return false;
+  }
+
+  pn532_packetbuffer[1] = serialBaudrate;
+
+  DMSG("Set baudrate %d bps", baudrate);
 
   if (HAL(writeCommand)(pn532_packetbuffer, 2))
     return false;
@@ -52,9 +90,13 @@ bool PN532::setSerialBaudrate() {
   int16_t status =
       HAL(readResponse)(pn532_packetbuffer, sizeof(pn532_packetbuffer));
 
+  if (0 > status) {
+    return false;
+  }
+
   HAL(sendAckFrame)();
 
-  return HAL(modifyHsuBaudrate)(9600);
+  return HAL(modifyHsuBaudrate)(baudrate);
   ;
 }
 

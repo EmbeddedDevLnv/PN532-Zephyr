@@ -145,7 +145,7 @@ public:
 
     // Generic PN532 functions
     bool powerDown(void);
-    bool setSerialBaudrate(void);
+    bool setSerialBaudrate(int baudrate);
     bool SAMConfig(void);
     uint32_t getFirmwareVersion(void);
     uint32_t readRegister(uint16_t reg);
