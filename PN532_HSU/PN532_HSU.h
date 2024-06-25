@@ -7,7 +7,7 @@
 
 #define PN532_HSU_DEBUG
 
-#define PN532_HSU_READ_TIMEOUT						(1000)
+#define PN532_HSU_READ_TIMEOUT						(30)
 
 class PN532_HSU : public PN532Interface {
 public:
@@ -18,6 +18,7 @@ public:
     bool modifyHsuBaudrate(int baudrate) override;
     void sendAckFrame(void) override;
     int8_t writeCommand(const uint8_t *header, uint8_t hlen, const uint8_t *body = 0, uint8_t blen = 0) override;
+    int16_t readResponse(uint8_t buf[], uint8_t len) override;
     int16_t readResponse(uint8_t buf[], uint8_t len, uint16_t timeout) override;
     
 private:

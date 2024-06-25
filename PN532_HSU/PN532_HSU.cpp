@@ -77,6 +77,10 @@ void PN532_HSU::sendAckFrame() {
   _serial->write(PN532_ACK, sizeof(PN532_ACK));
 }
 
+int16_t PN532_HSU::readResponse(uint8_t buf[], uint8_t len) {
+    return readResponse(buf, len, PN532_HSU_READ_TIMEOUT);
+}
+
 int16_t PN532_HSU::readResponse(uint8_t buf[], uint8_t len, uint16_t timeout) {
   uint8_t tmp[3];
 
